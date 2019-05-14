@@ -17,7 +17,8 @@ class CreateTasksTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->date('due_by');
+            $table->timestamp('due_by');
+            $table->boolean('complete')->default(false);
             $table->timestamps();
         });
     }
