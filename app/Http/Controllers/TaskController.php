@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -16,10 +17,34 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasks = Task::orderByDesc('created_at')->get();
-
+        $tasks = Task::orderByDesc('due_by')->get();
+        foreach($tasks as $task){
+            $task->due_by = Carbon::parse($task->due_by)->diffForHumans();
+        }
         return response()->json($tasks);
     }
+
+    public function markComplete(Request $request, Task $task){
+
+        $task = Task::where('id', $request->id)->first();
+        $task->complete = 1;
+        if($task->save()){
+            return 'Success!';
+        }else{
+            return 'Failed';
+        }
+    }
+
+    public function markNotComplete(Request $request){
+        $task = Task::where('id', $request->id)->first();
+        $task->complete = 0;
+        if($task->save()){
+            return 'Success!';
+        }else {
+            return 'Negative';
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
