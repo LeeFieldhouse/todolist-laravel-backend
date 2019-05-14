@@ -20,3 +20,5 @@ use Illuminate\Http\Request;
 Route::get('/', 'TaskController@index');
 Route::post('/', 'TaskController@store');
 Route::delete('/', 'TaskController@destroy');
+Route::post('/mark-complete', 'TaskController@markComplete');
+Route::post('/mark-notcomplete', 'TaskController@markNotComplete');
